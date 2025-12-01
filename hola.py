@@ -1,0 +1,7 @@
+nombre = input("Cual es tu nombre? ")
+apellido = input("Cual es tu apellido? ")
+localizacion = input("Cual es tu localización? ")
+edad = input("Cual es tu edad? ")
+edadNumero = int(edad)
+print("Hola " + nombre.title(), apellido.title() + "! Tu ubicación es "+ localizacion.upper() +" y tienes "+ edad +" años. Dentro de 3 años tendrás " + str(edadNumero + 3) + " años")
+print(f"Hola {nombre.title()} {apellido.title()}! Tu ubicación es {localizacion.upper()} y tienes  {edad} años. Dentro de 3 años tendrás {str(edadNumero + 3)} años")
