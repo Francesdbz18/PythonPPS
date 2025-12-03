@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template
+import mysql.connector
 app = Flask(__name__)
 
 hola = "HOLA HIJO DE PUTA: "
@@ -18,9 +19,27 @@ def formulario():
 def login():
     nombre = request.form.get('username')
     password = request.form.get('password')
-    if nombre == "root" and password == "1234":
-        return "HOLA HIJO DE PUTA: "+ nombre, 200
-    return "ACCESO DENEGADO", 403
+    try:
+        conexion = mysql.connector.connect(
+            host="127.0.0.1",
+            port=3190,
+            user="root",
+            password="secret",
+            database="cibera")
+        cursor = conexion.cursor()
+        cursor.execute("SELECT * FROM usuarios WHERE codigo = %s AND clave = %s", (nombre, password))
+        resultado = cursor.fetchone()
+        if resultado is None:
+            return "ACCESO DENEGADO", 403
+        else:
+            return "HOLA HIJO DE PUTA: "+ nombre, 200
+    except:
+        return "ERROR DE CONEXION A LA BASE DE DATOS", 500
+    finally:
+        if 'cursor' in locals():
+            cursor.close()
+        if 'conexion' in locals() and conexion.is_connected():
+            conexion.close()
 
 @app.route('/saludo2', methods=['GET'])
 def saludo2():
